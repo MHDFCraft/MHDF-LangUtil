@@ -26,32 +26,32 @@ public final class LangManager {
      * 下载游戏语言文件
      */
     public void downloadLang() {
-        if (LangAPI.getLangFile().exists()) {
+        if (LangAPI.instance.getLangFile().exists()) {
             return;
         }
 
-        LangAPI.getPlugin().getLogger().info("正在下载语言文件,请稍后!");
+        LangAPI.instance.getPlugin().getLogger().info("正在下载语言文件,请稍后!");
 
         try {
             // 读取MC版本列表
-            byte[] versionManifestBytes = LangAPI.getHttpManager().downloadFile(LangAPI.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/mc/game/version_manifest.json"));
+            byte[] versionManifestBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/mc/game/version_manifest.json"));
             JSONObject versionManifest = JSON.parseObject(versionManifestBytes);
 
-            String serverVersion = LangAPI.getServerManager().getServerVersion();
+            String serverVersion = LangAPI.instance.getServerManager().getServerVersion();
             byte[] versionBytes = null;
 
             // 读取当前服务端版本的版本配置
             for (JSONObject versions : versionManifest.getList("versions", JSONObject.class)) {
                 if (versions.getString("id").equals(serverVersion)) {
-                    versionBytes = LangAPI.getHttpManager().downloadFile(
-                            LangAPI.getHttpManager().openConnection(versions.getString("url"))
+                    versionBytes = LangAPI.instance.getHttpManager().downloadFile(
+                            LangAPI.instance.getHttpManager().openConnection(versions.getString("url"))
                     );
                 }
             }
             JSONObject version = JSON.parseObject(versionBytes);
 
             // 读取服务端版本的资源文件配置
-            byte[] assetsBytes = LangAPI.getHttpManager().downloadFile(LangAPI.getHttpManager().openConnection(
+            byte[] assetsBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection(
                     Objects.requireNonNull(version).getJSONObject("assetIndex").getString("url")
             ));
             JSONObject assets = JSON.parseObject(assetsBytes);
@@ -60,12 +60,12 @@ public final class LangManager {
             String langHash = assets.getJSONObject("objects").getJSONObject("minecraft/lang/zh_cn.json").getString("hash");
 
             // 下载中文语言文件
-            LangAPI.getHttpManager().downloadFile(
-                    LangAPI.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/assets/" + langHash.substring(0, 2) + "/" + langHash),
-                    LangAPI.getLangFile().toPath()
+            LangAPI.instance.getHttpManager().downloadFile(
+                    LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/assets/" + langHash.substring(0, 2) + "/" + langHash),
+                    LangAPI.instance.getLangFile().toPath()
             );
 
-            LangAPI.getPlugin().getLogger().info("语言文件下载完成!");
+            LangAPI.instance.getPlugin().getLogger().info("语言文件下载完成!");
         } catch (DownloadException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +76,7 @@ public final class LangManager {
      */
     public void reloadLang() {
         try {
-            byte[] langBytes = Files.readAllBytes(LangAPI.getLangFile().toPath());
+            byte[] langBytes = Files.readAllBytes(LangAPI.instance.getLangFile().toPath());
 
             try {
                 this.data = JSON.parseObject(langBytes);
@@ -117,6 +117,6 @@ public final class LangManager {
             reloadLang();
         }
 
-        return this.data.getString(LangAPI.getItemManager().getKey(item));
+        return this.data.getString(LangAPI.instance.getItemManager().getKey(item));
     }
 }

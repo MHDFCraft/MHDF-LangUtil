@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.ChengZhiYa</groupId>
         <artifactId>MHDF-LangUtil-parent</artifactId>
-        <version>${env.project.version}</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>v1_8_R3</artifactId>

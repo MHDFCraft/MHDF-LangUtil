@@ -6,12 +6,11 @@
 
     <groupId>cn.ChengZhiYa</groupId>
     <artifactId>MHDF-LangUtil-parent</artifactId>
-    <version>${env.project.version}</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <properties>
         <env.java.version>1.8</env.java.version>
-        <env.project.version>1.0.0</env.project.version>
     </properties>
 
     <build>
