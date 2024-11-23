@@ -10,7 +10,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>api</artifactId>
+    <artifactId>MHDF-LangUtil</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,7 +21,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <source>${env.java.version}</source>
                     <target>${env.java.version}</target>
@@ -38,11 +38,14 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <minimizeJar>true</minimizeJar>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF</exclude>
+                                        <exclude>schema</exclude>
+                                    </excludes>
                                 </filter>
                             </filters>
                         </configuration>
@@ -50,25 +53,62 @@
                 </executions>
             </plugin>
         </plugins>
+        <defaultGoal>clean package install</defaultGoal>
     </build>
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>2.0.53</version>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_8_R1</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_8_R2</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_8_R3</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_9_R1</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_9_R2</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_10_R1</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_11_R1</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ChengZhiYa</groupId>
+            <artifactId>v1_12_R1</artifactId>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
