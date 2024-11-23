@@ -54,10 +54,12 @@ public final class LangManager {
             byte[] assetsBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection(
                     Objects.requireNonNull(version).getJSONObject("assetIndex").getString("url")
             ));
-            JSONObject assets = JSON.parseObject(assetsBytes);
+            JSONObject assets = JSON.parseObject(assetsBytes).getJSONObject("objects");
 
             // 获取中文语言文件的哈希值
-            String langHash = assets.getJSONObject("objects").getJSONObject("minecraft/lang/zh_cn.json").getString("hash");
+            String langHash = assets.getJSONObject("minecraft/lang/zh_cn.json") != null ?
+                    assets.getJSONObject("minecraft/lang/zh_cn.json").getString("hash") :
+                    assets.getJSONObject("minecraft/lang/zh_cn.lang").getString("hash");
 
             // 下载中文语言文件
             LangAPI.instance.getHttpManager().downloadFile(
