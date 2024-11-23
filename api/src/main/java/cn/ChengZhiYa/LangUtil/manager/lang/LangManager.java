@@ -59,7 +59,7 @@ public final class LangManager {
             // 获取中文语言文件的哈希值
             String langHash = assets.getJSONObject("minecraft/lang/zh_cn.json") != null ?
                     assets.getJSONObject("minecraft/lang/zh_cn.json").getString("hash") :
-                    assets.getJSONObject("minecraft/lang/zh_cn.lang").getString("hash");
+                    assets.getJSONObject("minecraft/lang/zh_CN.lang").getString("hash");
 
             // 下载中文语言文件
             LangAPI.instance.getHttpManager().downloadFile(
