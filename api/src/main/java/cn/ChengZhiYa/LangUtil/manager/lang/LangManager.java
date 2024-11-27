@@ -21,6 +21,7 @@ public final class LangManager {
     private JSONObject data = new JSONObject();
     @Getter
     private boolean loaded = false;
+    private int retryCount = 0;
 
     /**
      * 下载游戏语言文件
@@ -32,44 +33,61 @@ public final class LangManager {
 
         LangAPI.instance.getPlugin().getLogger().info("正在下载语言文件,请稍后!");
 
-        try {
-            // 读取MC版本列表
-            byte[] versionManifestBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/mc/game/version_manifest.json"));
-            JSONObject versionManifest = JSON.parseObject(versionManifestBytes);
+        boolean downloadSuccess = false;
 
-            String serverVersion = LangAPI.instance.getServerManager().getServerVersion();
-            byte[] versionBytes = null;
+        int maxRetries = 5;
+        while (retryCount < maxRetries && !downloadSuccess) {
+            try {
+                // 读取MC版本列表
+                byte[] versionManifestBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/mc/game/version_manifest.json"));
+                JSONObject versionManifest = JSON.parseObject(versionManifestBytes);
 
-            // 读取当前服务端版本的版本配置
-            for (JSONObject versions : versionManifest.getList("versions", JSONObject.class)) {
-                if (versions.getString("id").equals(serverVersion)) {
-                    versionBytes = LangAPI.instance.getHttpManager().downloadFile(
-                            LangAPI.instance.getHttpManager().openConnection(versions.getString("url"))
-                    );
+                String serverVersion = LangAPI.instance.getServerManager().getServerVersion();
+                byte[] versionBytes = null;
+
+                // 读取当前服务端版本的版本配置
+                for (JSONObject versions : versionManifest.getList("versions", JSONObject.class)) {
+                    if (versions.getString("id").equals(serverVersion)) {
+                        versionBytes = LangAPI.instance.getHttpManager().downloadFile(
+                                LangAPI.instance.getHttpManager().openConnection(versions.getString("url"))
+                        );
+                    }
+                }
+                JSONObject version = JSON.parseObject(versionBytes);
+
+                // 读取服务端版本的资源文件配置
+                byte[] assetsBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection(
+                        Objects.requireNonNull(version).getJSONObject("assetIndex").getString("url")
+                ));
+                JSONObject assets = JSON.parseObject(assetsBytes).getJSONObject("objects");
+
+                // 获取中文语言文件的哈希值
+                String langHash = assets.getJSONObject("minecraft/lang/zh_cn.json") != null ?
+                        assets.getJSONObject("minecraft/lang/zh_cn.json").getString("hash") :
+                        assets.getJSONObject("minecraft/lang/zh_CN.lang").getString("hash");
+
+                // 下载中文语言文件
+                LangAPI.instance.getHttpManager().downloadFile(
+                        LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/assets/" + langHash.substring(0, 2) + "/" + langHash),
+                        LangAPI.instance.getLangFile().toPath()
+                );
+
+                LangAPI.instance.getPlugin().getLogger().info("语言文件下载完成!");
+                downloadSuccess = true;
+
+            } catch (DownloadException | IOException e) {
+                retryCount++;
+                if (retryCount < maxRetries) {
+                    LangAPI.instance.getPlugin().getLogger().warning("下载语言文件失败，正在重试... 第 " + retryCount + " 次");
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException interruptedException) {
+                        Thread.currentThread().interrupt();
+                    }
+                } else {
+                    LangAPI.instance.getPlugin().getLogger().severe("下载语言文件失败,不再重试!");
                 }
             }
-            JSONObject version = JSON.parseObject(versionBytes);
-
-            // 读取服务端版本的资源文件配置
-            byte[] assetsBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection(
-                    Objects.requireNonNull(version).getJSONObject("assetIndex").getString("url")
-            ));
-            JSONObject assets = JSON.parseObject(assetsBytes).getJSONObject("objects");
-
-            // 获取中文语言文件的哈希值
-            String langHash = assets.getJSONObject("minecraft/lang/zh_cn.json") != null ?
-                    assets.getJSONObject("minecraft/lang/zh_cn.json").getString("hash") :
-                    assets.getJSONObject("minecraft/lang/zh_CN.lang").getString("hash");
-
-            // 下载中文语言文件
-            LangAPI.instance.getHttpManager().downloadFile(
-                    LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/assets/" + langHash.substring(0, 2) + "/" + langHash),
-                    LangAPI.instance.getLangFile().toPath()
-            );
-
-            LangAPI.instance.getPlugin().getLogger().info("语言文件下载完成!");
-        } catch (DownloadException | IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
