@@ -60,55 +60,55 @@
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>api</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_8_R1</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_8_R2</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_8_R3</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_9_R1</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_9_R2</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_10_R1</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_11_R1</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.ChengZhiYa</groupId>
             <artifactId>v1_12_R1</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
