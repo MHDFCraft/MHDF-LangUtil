@@ -49,6 +49,17 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>papermc-repo</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>huawei-maven</id>
+            <url>https://repo.huaweicloud.com/repository/maven</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -67,6 +78,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.17.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.20.4-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
