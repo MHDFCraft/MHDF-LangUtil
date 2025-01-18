@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.ChengZhiYa</groupId>
         <artifactId>MHDF-LangUtil-parent</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
 
     <artifactId>v1_11_R1</artifactId>
