@@ -129,7 +129,7 @@ public final class LangManager {
      * @return 物品名称
      */
     public String getItemName(ItemStack item) {
-        if (item.getItemMeta().hasDisplayName()) {
+        if (item.getItemMeta() != null && item.getItemMeta().hasDisplayName()) {
             return item.getItemMeta().getDisplayName();
         }
 
