@@ -29,13 +29,31 @@ _✨Lightweight • Portable • Fast✨_
     </a>
 </div>
 
+## Usage Guide
+
+1. Import this library into your project. Add the MHDF-LangUtil dependency to your build configuration.
+2. Create a LangAPI instance
+   ```java
+   LangAPI langAPI = new LangAPI(this, new File(getDataFolder(), "minecraftLang"));
+   ```
+3. Download and reload language files
+   ```java
+   LangManager langManager = langAPI.getLangManager();
+   langManager.downloadLang(); 
+   langManager.reloadLang();
+   ```
+4. get the Chinese name of an item
+   ```java
+   langManager.getItemName(itemStack);
+   ```
+
 ## Contributors
 
 <a href="https://github.com/MHDFCraft/MHDF-LangUtil/graphs/contributors">
   <img src="https://stg.contrib.rocks/image?repo=MHDFCraft/MHDF-LangUtil" alt="contributors"/>
 </a>
 
-## Spiritual pillar
+## Spiritual Pillar
 
 - [Xiao-MoMi](https://github.com/Xiao-MoMi)
 

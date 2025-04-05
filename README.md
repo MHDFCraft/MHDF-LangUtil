@@ -22,8 +22,6 @@ _✨轻量 便携 快捷✨_
     <a href="https://qm.qq.com/cgi-bin/qm/qr?k=T047YB6lHNMMcMuVlK_hGBcT5HNESxMA&jump_from=webapi&authKey=0/IFGIO6xLjjHB2YKF7laLxkKWbtWbDhb1lt//m7GgbElJSWdRZ8RjbWzSsufkO6">
         <img src="https://img.shields.io/badge/QQ群-129139830-brightgreen?style=flat-square" alt="qq-group">
     </a>
-    <img src="https://img.shields.io/badge/最佳支持版本-1.21.4-brightgreen?style=flat-square" alt="minecraft-version">
-    <img src="https://img.shields.io/badge/JDK-17+-brightgreen?style=flat-square" alt="jdk-version">
 </p>
 
 <div align="center">
@@ -31,6 +29,24 @@ _✨轻量 便携 快捷✨_
         <img src="https://repobeats.axiom.co/api/embed/e58f3e1358766291db33ba451d3e90be99811f4f.svg" alt="pulse">
     </a>
 </div>
+
+## 使用方法
+
+1. 将本库导入至您的项目
+2. 创建一个LangAPI实例就像这样:
+   ```java
+   LangAPI langAPI = new LangAPI(this, new File(getDataFolder(), "minecraftLang"));
+   ```
+3. 然后下载并重载语言文件
+   ```java
+   LangManager langManager = langAPI.getLangManager();
+   langManager.downloadLang(); 
+   langManager.reloadLang();
+   ```
+4. 然后就可以像这样获取一个物品实例的中文名称了
+   ```java
+   langManager.getItemName(itemStack);
+   ```
 
 ## 贡献者
 
