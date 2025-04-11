@@ -25,6 +25,14 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>chengzhimeow-maven-repo-releases</id>
+            <name>橙汁喵の仓库</name>
+            <url>https://maven.chengzhimeow.cn/releases</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
