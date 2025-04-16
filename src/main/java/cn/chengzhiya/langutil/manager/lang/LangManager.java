@@ -5,6 +5,7 @@ import cn.chengzhiya.langutil.exception.DownloadException;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.Getter;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.BufferedReader;
@@ -138,5 +139,23 @@ public final class LangManager {
         }
 
         return this.data.getString(LangAPI.instance.getItemManager().getKey(item));
+    }
+
+    /**
+     * 获取实体名称
+     *
+     * @param entity 实体实例
+     * @return 实体名称
+     */
+    public String getEntityName(Entity entity) {
+        if (entity.getCustomName() != null) {
+            return entity.getCustomName();
+        }
+
+        if (!isLoaded()) {
+            reloadLang();
+        }
+
+        return this.data.getString(LangAPI.instance.getEntityManager().getKey(entity));
     }
 }
