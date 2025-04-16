@@ -1,14 +1,18 @@
 package cn.chengzhiya.langutil;
 
+import cn.chengzhiya.langutil.manager.entity.BukkitEntityManagerImpl;
+import cn.chengzhiya.langutil.manager.entity.EntityManager;
+import cn.chengzhiya.langutil.manager.entity.ReflectionEntityManagerImpl;
 import cn.chengzhiya.langutil.manager.item.BukkitItemManagerImpl;
 import cn.chengzhiya.langutil.manager.item.ItemManager;
-import cn.chengzhiya.langutil.manager.item.ReflectionManagerImpl;
+import cn.chengzhiya.langutil.manager.item.ReflectionItemManagerImpl;
 import cn.chengzhiya.langutil.manager.lang.LangManager;
 import cn.chengzhiya.langutil.manager.network.HttpManager;
 import cn.chengzhiya.langutil.manager.reflection.ReflectionManager;
 import cn.chengzhiya.langutil.manager.server.ServerManager;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -22,7 +26,9 @@ public final class LangAPI {
     private final ServerManager serverManager = new ServerManager();
     private final JavaPlugin plugin;
     private final File langFile;
+
     private ItemManager itemManager;
+    private EntityManager entityManager;
 
     /**
      * @param plugin   插件主类
@@ -37,7 +43,14 @@ public final class LangAPI {
             Material.class.getDeclaredMethod("getKey");
             this.itemManager = new BukkitItemManagerImpl();
         } catch (NoSuchMethodException e) {
-            this.itemManager = new ReflectionManagerImpl();
+            this.itemManager = new ReflectionItemManagerImpl();
+        }
+
+        try {
+            EntityType.class.getDeclaredMethod("getKey");
+            this.entityManager = new BukkitEntityManagerImpl();
+        } catch (NoSuchMethodException e) {
+            this.entityManager = new ReflectionEntityManagerImpl();
         }
     }
 }

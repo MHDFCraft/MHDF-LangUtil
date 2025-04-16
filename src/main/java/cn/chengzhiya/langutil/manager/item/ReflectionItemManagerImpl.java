@@ -3,7 +3,7 @@ package cn.chengzhiya.langutil.manager.item;
 import cn.chengzhiya.langutil.LangAPI;
 import org.bukkit.inventory.ItemStack;
 
-public final class ReflectionManagerImpl implements ItemManager {
+public final class ReflectionItemManagerImpl implements ItemManager {
     @Override
     public String getKey(ItemStack item) {
         StringBuilder key = new StringBuilder();
