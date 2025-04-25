@@ -30,6 +30,27 @@ _✨轻量 便携 快捷✨_
     </a>
 </div>
 
+## maven配置
+
+```xml
+<repositories>
+   <repository>
+      <id>chengzhimeow-maven-repo-releases</id>
+      <name>橙汁喵の仓库</name>
+      <url>https://maven.chengzhimeow.cn/releases</url>
+   </repository>
+</repositories>
+
+<dependencies>
+   <dependency>
+      <groupId>cn.chengzhiya</groupId>
+      <artifactId>MHDF-LangUtil</artifactId>
+      <version>1.1.2</version>
+      <scope>compile</scope>
+   </dependency>
+</dependencies>
+```
+
 ## 使用方法
 
 1. 将本库导入至您的项目
