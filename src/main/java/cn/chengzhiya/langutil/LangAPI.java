@@ -16,28 +16,30 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public final class LangAPI {
     public static LangAPI instance;
-    private final LangManager langManager = new LangManager();
     private final HttpManager httpManager = new HttpManager();
     private final ReflectionManager reflectionManager = new ReflectionManager();
     private final ServerManager serverManager = new ServerManager();
     private final JavaPlugin plugin;
-    private final File langFile;
+    private final File langFileFolder;
+
+    private final ConcurrentHashMap<String, LangManager> langManagerHashMap = new ConcurrentHashMap<>();
 
     private ItemManager itemManager;
     private EntityManager entityManager;
 
     /**
-     * @param plugin   插件主类
-     * @param langFile 语言文件的文件实例(最好不要包含后缀)
+     * @param plugin         插件主类
+     * @param langFileFolder 语言文件的文件夹实例
      */
-    public LangAPI(JavaPlugin plugin, File langFile) {
+    public LangAPI(JavaPlugin plugin, File langFileFolder) {
         instance = this;
         this.plugin = plugin;
-        this.langFile = langFile;
+        this.langFileFolder = langFileFolder;
 
         try {
             Material.class.getDeclaredMethod("getKey");
@@ -52,5 +54,31 @@ public final class LangAPI {
         } catch (NoSuchMethodException e) {
             this.entityManager = new ReflectionEntityManagerImpl();
         }
+    }
+
+    /**
+     * 获取指定语言的语言文件管理器
+     *
+     * @param lang 语言
+     * @return 语言文件管理器
+     */
+    public LangManager getLangManager(String lang) {
+        if (getLangManagerHashMap().get(lang) != null) {
+            return getLangManagerHashMap().get(lang);
+        }
+
+        LangManager langManager = new LangManager(lang);
+        getLangManagerHashMap().put(lang, langManager);
+
+        return langManager;
+    }
+
+    /**
+     * 获取中文的语言文件管理器
+     *
+     * @return 语言文件管理器
+     */
+    public LangManager getLangManager() {
+        return getLangManager("zh_cn");
     }
 }

@@ -45,7 +45,7 @@ _✨轻量 便携 快捷✨_
    <dependency>
       <groupId>cn.chengzhiya</groupId>
       <artifactId>MHDF-LangUtil</artifactId>
-      <version>1.1.2</version>
+      <version>1.2.0</version>
       <scope>compile</scope>
    </dependency>
 </dependencies>
@@ -60,11 +60,11 @@ _✨轻量 便携 快捷✨_
    ```
 3. 然后下载并重载语言文件
    ```java
-   LangManager langManager = langAPI.getLangManager();
+   LangManager langManager = langAPI.getLangManager("zh_cn");
    langManager.downloadLang(); 
    langManager.reloadLang();
    ```
-4. 然后就可以像这样获取一个物品实例的中文名称了
+4. 然后就可以像这样获取一个物品实例的名称了
    ```java
    langManager.getItemName(itemStack);
    ```

@@ -8,29 +8,46 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 public final class LangManager {
+    @Getter
+    private final String lang;
     @Getter
     private JSONObject data = new JSONObject();
     @Getter
     private boolean loaded = false;
     private int retryCount = 0;
 
+    public LangManager(String lang) {
+        this.lang = lang;
+    }
+
+    /**
+     * 获取语言文件实例
+     *
+     * @return 语言文件实例
+     */
+    public File getLangFile() {
+        return new File(LangAPI.instance.getLangFileFolder(), getLang());
+    }
+
     /**
      * 下载游戏语言文件
      */
     public void downloadLang() {
-        if (LangAPI.instance.getLangFile().exists()) {
+        File langFile = getLangFile();
+        if (langFile.exists()) {
             return;
         }
+
+        String region = lang.split("_")[1];
+        String oldLang = lang.replace(region, region.toLowerCase(Locale.ROOT));
 
         LangAPI.instance.getPlugin().getLogger().info("正在下载语言文件,请稍后!");
 
@@ -63,14 +80,14 @@ public final class LangManager {
                 JSONObject assets = JSON.parseObject(assetsBytes).getJSONObject("objects");
 
                 // 获取中文语言文件的哈希值
-                String langHash = assets.getJSONObject("minecraft/lang/zh_cn.json") != null ?
-                        assets.getJSONObject("minecraft/lang/zh_cn.json").getString("hash") :
-                        assets.getJSONObject("minecraft/lang/zh_CN.lang").getString("hash");
+                String langHash = assets.getJSONObject("minecraft/lang/" + lang + ".json") != null ?
+                        assets.getJSONObject("minecraft/lang/" + lang + ".json").getString("hash") :
+                        assets.getJSONObject("minecraft/lang/" + oldLang + ".lang").getString("hash");
 
                 // 下载中文语言文件
                 LangAPI.instance.getHttpManager().downloadFile(
                         LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/assets/" + langHash.substring(0, 2) + "/" + langHash),
-                        LangAPI.instance.getLangFile().toPath()
+                        langFile.toPath()
                 );
 
                 LangAPI.instance.getPlugin().getLogger().info("语言文件下载完成!");
@@ -97,7 +114,7 @@ public final class LangManager {
      */
     public void reloadLang() {
         try {
-            byte[] langBytes = Files.readAllBytes(LangAPI.instance.getLangFile().toPath());
+            byte[] langBytes = Files.readAllBytes(getLangFile().toPath());
 
             try {
                 this.data = JSON.parseObject(langBytes);
