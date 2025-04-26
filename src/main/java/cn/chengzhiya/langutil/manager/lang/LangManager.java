@@ -54,7 +54,7 @@ public final class LangManager {
             return;
         }
 
-        String region = lang.split("_")[1];
+        String region = lang.split("_").length == 2 ? lang.split("_")[1] : "";
         String oldLang = lang.replace(region, region.toLowerCase(Locale.ROOT));
 
         LangAPI.instance.getPlugin().getLogger().info("正在下载语言文件,请稍后!");
