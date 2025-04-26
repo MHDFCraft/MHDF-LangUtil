@@ -93,6 +93,7 @@ public final class LangManager {
                         assets.getJSONObject("minecraft/lang/" + oldLang + ".lang").getString("hash");
 
                 // 下载中文语言文件
+                langFile.createNewFile();
                 LangAPI.instance.getHttpManager().downloadFile(
                         LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/assets/" + langHash.substring(0, 2) + "/" + langHash),
                         langFile.toPath()
@@ -100,7 +101,6 @@ public final class LangManager {
 
                 LangAPI.instance.getPlugin().getLogger().info("语言文件下载完成!");
                 downloadSuccess = true;
-
             } catch (DownloadException | IOException e) {
                 retryCount++;
                 if (retryCount < maxRetries) {
