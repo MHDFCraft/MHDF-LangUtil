@@ -45,7 +45,7 @@ _✨轻量 便携 快捷✨_
    <dependency>
       <groupId>cn.chengzhiya</groupId>
       <artifactId>MHDF-LangUtil</artifactId>
-      <version>1.2.0</version>
+      <version>1.2.1</version>
       <scope>compile</scope>
    </dependency>
 </dependencies>

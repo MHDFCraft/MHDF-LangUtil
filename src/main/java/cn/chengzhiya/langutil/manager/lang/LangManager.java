@@ -34,6 +34,14 @@ public final class LangManager {
      * @return 语言文件实例
      */
     public File getLangFile() {
+        if (LangAPI.instance.getLangFileFolder().exists()) {
+            if (!LangAPI.instance.getLangFileFolder().isDirectory()) {
+                LangAPI.instance.getLangFileFolder().delete();
+            }
+        }
+        if (!LangAPI.instance.getLangFileFolder().exists()) {
+            LangAPI.instance.getLangFileFolder().mkdirs();
+        }
         return new File(LangAPI.instance.getLangFileFolder(), getLang());
     }
 
