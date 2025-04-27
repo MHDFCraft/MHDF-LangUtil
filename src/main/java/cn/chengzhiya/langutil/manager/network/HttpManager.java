@@ -9,9 +9,31 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public final class HttpManager {
+    /**
+     * 获取最快的地址
+     *
+     * @param urlList 地址列表
+     * @return 延迟最低的地址(如果全部无法访问则返回第一个)
+     */
+    public String getFastUrl(List<String> urlList) {
+        String minDelayUrl = urlList.get(0);
+        long minDelay = Long.MAX_VALUE;
+
+        for (String url : urlList) {
+            long delay = getConnectingDelay(url);
+            if (delay != -1 && delay < minDelay) {
+                minDelay = delay;
+                minDelayUrl = url;
+            }
+        }
+
+        return minDelayUrl;
+    }
+
     /**
      * 通过URL地址打开URL连接
      *
@@ -24,6 +46,24 @@ public final class HttpManager {
         connection.setConnectTimeout((int) TimeUnit.SECONDS.toMillis(20));
         connection.setReadTimeout((int) TimeUnit.SECONDS.toMillis(20));
         return connection;
+    }
+
+    /**
+     * 获取指定URL地址的连接延迟
+     *
+     * @param urlString URL地址
+     * @return 连接延迟
+     */
+    public long getConnectingDelay(String urlString) {
+        long startTime = System.currentTimeMillis();
+        try {
+            URLConnection urlConnection = openConnection(urlString);
+            urlConnection.connect();
+        } catch (IOException e) {
+            return -1;
+        }
+        long endTime = System.currentTimeMillis();
+        return endTime - startTime;
     }
 
     /**

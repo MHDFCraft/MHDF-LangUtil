@@ -10,10 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public final class LangManager {
     @Getter
@@ -46,6 +43,33 @@ public final class LangManager {
     }
 
     /**
+     * 获取最快的启动器数据地址
+     *
+     * @return 启动器数据地址
+     */
+    public String getFastLauncherMetaUrl() {
+        List<String> urlList = Arrays.asList(
+                "https://bmclapi2.bangbang93.com/mc/game/version_manifest.json",
+                "https://launchermeta.mojang.com/mc/game/version_manifest.json"
+        );
+        return LangAPI.instance.getHttpManager().getFastUrl(urlList);
+    }
+
+    /**
+     * 获取指定资源哈希的资源地址
+     *
+     * @param hash 资源哈希
+     * @return 资源地址
+     */
+    public String getFastAssetsUrl(String hash) {
+        List<String> urlList = Arrays.asList(
+                "https://resources.download.minecraft.net/" + hash.substring(0, 2) + "/" + hash,
+                "https://bmclapi2.bangbang93.com/assets/" + hash.substring(0, 2) + "/" + hash
+        );
+        return LangAPI.instance.getHttpManager().getFastUrl(urlList);
+    }
+
+    /**
      * 下载游戏语言文件
      */
     public void downloadLang() {
@@ -65,7 +89,9 @@ public final class LangManager {
         while (retryCount < maxRetries && !downloadSuccess) {
             try {
                 // 读取MC版本列表
-                byte[] versionManifestBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/mc/game/version_manifest.json"));
+                byte[] versionManifestBytes = LangAPI.instance.getHttpManager().downloadFile(LangAPI.instance.getHttpManager().openConnection(
+                        getFastLauncherMetaUrl()
+                ));
                 JSONObject versionManifest = JSON.parseObject(versionManifestBytes);
 
                 String serverVersion = LangAPI.instance.getServerManager().getServerVersion();
@@ -95,7 +121,9 @@ public final class LangManager {
                 // 下载中文语言文件
                 langFile.createNewFile();
                 LangAPI.instance.getHttpManager().downloadFile(
-                        LangAPI.instance.getHttpManager().openConnection("https://bmclapi2.bangbang93.com/assets/" + langHash.substring(0, 2) + "/" + langHash),
+                        LangAPI.instance.getHttpManager().openConnection(
+                                getFastAssetsUrl(langHash)
+                        ),
                         langFile.toPath()
                 );
 
