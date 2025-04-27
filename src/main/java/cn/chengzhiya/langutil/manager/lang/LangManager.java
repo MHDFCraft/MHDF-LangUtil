@@ -61,7 +61,7 @@ public final class LangManager {
 
         boolean downloadSuccess = false;
 
-        int maxRetries = 5;
+        int maxRetries = 10;
         while (retryCount < maxRetries && !downloadSuccess) {
             try {
                 // 读取MC版本列表
@@ -104,14 +104,17 @@ public final class LangManager {
             } catch (DownloadException | IOException e) {
                 retryCount++;
                 if (retryCount < maxRetries) {
-                    LangAPI.instance.getPlugin().getLogger().warning("下载语言文件失败，正在重试... 第 " + retryCount + " 次");
+                    LangAPI.instance.getPlugin().getLogger().warning("下载语言文件失败，5秒后重试第 " + retryCount + " 次");
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException interruptedException) {
                         Thread.currentThread().interrupt();
                     }
                 } else {
                     LangAPI.instance.getPlugin().getLogger().severe("下载语言文件失败,不再重试!");
+                    if (langFile.exists()) {
+                        langFile.delete();
+                    }
                 }
             }
         }
