@@ -49,8 +49,8 @@ public final class LangManager {
      */
     public String getFastLauncherMetaUrl() {
         List<String> urlList = Arrays.asList(
-                "https://bmclapi2.bangbang93.com/mc/game/version_manifest.json",
-                "https://launchermeta.mojang.com/mc/game/version_manifest.json"
+                "https://launchermeta.mojang.com/mc/game/version_manifest.json",
+                "https://bmclapi2.bangbang93.com/mc/game/version_manifest.json"
         );
         return LangAPI.instance.getHttpManager().getFastUrl(urlList);
     }
